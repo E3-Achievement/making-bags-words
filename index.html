@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Making our trick-or-treat bags</title><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap"><style>
+.ws{--ink:#1f1830;--pur:#5b3491;--or:#e8731c;--soft:#fff4e8;--ok:#1f7a45;--no:#b8430c;--rule:#d8cfe5;font-family:"Atkinson Hyperlegible",Verdana,"Segoe UI",sans-serif;color:var(--ink);font-size:18px;line-height:1.4}
+.ws.sz-xl{font-size:22px}
+.ws *{box-sizing:border-box}
+.ws .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.ws .top{display:flex;align-items:flex-end;justify-content:space-between;gap:18px 28px;flex-wrap:wrap;padding-bottom:12px;border-bottom:3px solid var(--pur);margin-bottom:16px}
+.ws .top h1{margin:0;font-size:1.75em;line-height:1.15;color:var(--pur);flex:1 1 280px}
+.ws .idlines{display:flex;flex-direction:column;gap:10px;flex:0 1 3.4in;min-width:220px}
+.ws .idline{display:flex;align-items:flex-end;gap:10px}
+.ws .idlbl{font-weight:700;font-size:.9em}
+.ws .rule{flex:1;border-bottom:2px solid var(--ink);height:1.4em}
+.ws .idline input{flex:1;min-width:0;font:inherit;font-size:1.05em;border:0;border-bottom:2px solid var(--ink);padding:4px 2px;background:transparent;color:var(--ink);outline:none}
+.ws .idline input:focus{border-bottom-color:var(--or);background:var(--soft)}
+.ws .dirbox{display:flex;align-items:center;gap:14px;flex-wrap:wrap;background:var(--soft);border-left:6px solid var(--or);border-radius:4px 10px 10px 4px;padding:10px 16px;margin-bottom:18px}
+.ws .dirtext{flex:1 1 300px}
+.ws .dir{margin:0;font-weight:700;font-size:1.05em}
+.ws .how{margin:2px 0 0;font-size:.85em;color:#4d4363}
+.ws .part{margin:0 0 22px}
+.ws .parthead{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 8px;border-bottom:2px solid var(--rule);padding-bottom:4px}
+.ws .parthead h2{margin:0;font-size:1em;color:var(--pur)}
+.ws .parthead.solo{border-bottom:0;justify-content:flex-end;margin-bottom:4px}
+.ws .mgrid{position:relative;display:grid;grid-template-columns:minmax(0,1fr) minmax(48px,.85in) minmax(0,1.35fr);row-gap:8px;align-items:stretch}
+.ws .mcell{display:flex;align-items:center;gap:8px;min-height:2.9em;padding:4px 6px;border:2px solid transparent;border-radius:10px;position:relative}
+.ws .mcell.left .dot{margin-left:auto}
+.ws .num,.ws .let{font-weight:700;color:var(--pur);flex:0 0 auto;min-width:1.5em}
+.ws .wtxt{font-weight:700;font-size:1.08em}
+.ws .dtxt{flex:1 1 auto}
+.ws .blank{flex:0 0 auto;width:2.1em;height:1.3em;border-bottom:2px solid var(--ink);margin-right:2px}
+.ws .dot{flex:0 0 auto;width:40px;height:40px;position:relative}
+.ws .dot::after{content:"";position:absolute;left:50%;top:50%;width:16px;height:16px;margin:-8px 0 0 -8px;border-radius:50%;background:var(--ink)}
+.ws .mk{flex:0 0 auto;font-weight:700;font-size:1.1em;min-width:0}
+.ws .mlines{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none;overflow:visible}
+.ws .ln{stroke:var(--pur);stroke-width:5;stroke-linecap:round}
+.ws .ln.tmp{stroke:var(--or);stroke-dasharray:3 9}
+.ws .ln.ok{stroke:var(--ok)}
+.ws .ln.no{stroke:var(--no);stroke-dasharray:12 8}
+.ws .say{flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:50%;border:2px solid var(--pur);background:#fff;color:var(--pur);cursor:pointer;padding:0}
+.ws .say:hover{background:var(--pur);color:#fff}
+.ws .say:focus-visible,.ws .tbtn:focus-visible,.ws .bigbtn:focus-visible{outline:3px solid var(--or);outline-offset:2px}
+
+.ws-digital .mcell{cursor:pointer;background:#f8f6fb;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none}
+.ws-digital .mcell:hover{background:#efe8f7}
+.ws-digital .mcell:focus-visible{outline:3px solid var(--pur);outline-offset:2px}
+.ws-digital .mcell.linked .dot::after{background:var(--pur)}
+.ws-digital .mcell.sel{border-color:var(--or);background:#fff0e0}
+.ws-digital .mcell.sel .dot::after{background:var(--or);box-shadow:0 0 0 6px #ffd8b3}
+.ws-digital .dot{touch-action:none;cursor:grab}
+.ws-digital .mcell.ok{border-color:var(--ok);background:#eef8f1}
+.ws-digital .mcell.ok .mk{color:var(--ok)}
+.ws-digital .mcell.no{border-color:var(--no);background:#fff3ec}
+.ws-digital .mcell.no .mk{color:var(--no)}
+
+.ws .tbtn{font:inherit;font-size:.85em;font-weight:700;background:#fff;color:var(--pur);border:2px solid var(--pur);border-radius:10px;padding:7px 14px;cursor:pointer;display:inline-flex;align-items:center;gap:8px}
+.ws .tbtn.small{font-size:.75em;padding:4px 10px;border-color:var(--rule)}
+.ws .tbtn.big{font-size:.95em;padding:10px 18px}
+.ws .readdir{flex:0 0 auto}
+.ws .bigbtn{font:inherit;font-size:1.05em;font-weight:700;background:var(--or);color:#fff;border:0;border-radius:12px;padding:12px 26px;cursor:pointer;box-shadow:0 4px 0 #a9500f}
+.ws .donebar{text-align:center;margin:24px 0 6px}
+.ws .result{border:3px solid var(--pur);border-radius:14px;padding:18px;background:#faf7fd;text-align:center;margin-top:14px}
+.ws .result h2{margin:2px 0 6px;font-size:1.35em;color:var(--pur)}
+.ws .resnote{margin:0 0 10px}
+.ws .emailrow{display:flex;gap:8px;align-items:center;justify-content:center;flex-wrap:wrap;margin:14px 0 8px;font-weight:700}
+.ws .emailin{font:inherit;font-size:.95em;padding:8px 10px;border:2px solid #cbbde0;border-radius:9px;min-width:260px}
+.ws .rbtns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:10px}
+.ws .note{font-size:.75em;color:#5e5374;margin:12px 0 0}
+.ws .empty{color:#5e5374;font-style:italic}
+
+.ws .keypage{margin-top:28px;padding:18px 22px;border:2px solid var(--pur);border-radius:12px}
+.ws .keypage h1{margin:0;font-size:1.3em;color:var(--pur)}
+.ws .keysub{margin:2px 0 8px;color:#5e5374}
+.ws .keypage h2{margin:14px 0 4px;font-size:1em}
+.ws .keylist{margin:0;padding-left:1.6em}
+.ws .keylist li{margin:4px 0;font-size:.9em}
+.ws .keylet{display:inline-block;min-width:1.4em;text-align:center;border:2px solid var(--pur);border-radius:6px;color:var(--pur)}
+.ws .keydef{color:#4d4363}
+.ws .keynote{font-size:.8em;color:#5e5374;margin:14px 0 0}
+
+@media (max-width:620px){
+  .ws{font-size:16px}.ws.sz-xl{font-size:19px}
+  .ws .mgrid{grid-template-columns:minmax(0,40%) 22px minmax(0,1fr)}
+  .ws .dot{width:26px;height:26px}
+  .ws .dot::after{width:14px;height:14px;margin:-7px 0 0 -7px}
+  .ws .say{width:32px;height:32px}
+  .ws .mcell{padding:4px 3px;gap:4px}
+  .ws .mcell.left{flex-wrap:wrap;row-gap:2px}
+  .ws .mcell.left .wtxt{flex:1 1 auto;min-width:0;overflow-wrap:anywhere}
+  .ws .num,.ws .let{min-width:1.2em}
+  .ws .dtxt{min-width:0;overflow-wrap:anywhere}
+}
+.ws .pic{flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;width:1.9em;height:1.9em;font-size:1.45em;line-height:1}
+.ws .pic.img{width:2.6em;height:2.6em;font-size:1em;border-radius:8px;overflow:hidden;background:#fff}
+.ws .pic img{width:100%;height:100%;object-fit:contain;display:block}
+.ws .pic.small{width:1.4em;height:1.4em;font-size:1.05em;margin-right:6px;vertical-align:middle}
+.ws .pic.img.small{width:1.8em;height:1.8em;font-size:.9em}
+.ws-hw{position:relative}
+.ws-hw .hwbats{display:flex;justify-content:flex-end;gap:14px;color:#7a5aa8;margin:-6px 0 2px;height:22px}
+.ws-hw .hwbats svg{width:40px;height:16px}
+.ws-hw .hwbats svg:nth-child(2){width:30px;height:12px;margin-top:8px;opacity:.75}
+.ws-hw .hwbats svg:nth-child(3){width:24px;height:10px;margin-top:2px;opacity:.55}
+.ws-hw .hwpump{flex:0 0 auto;width:58px;height:54px;align-self:center}
+.ws-hw .hwpump svg{width:100%;height:100%}
+.ws-hw .top{border-bottom:4px dashed var(--or);align-items:center}
+.ws-hw .top h1{color:#3b2160}
+.ws-hw .parthead h2::before{content:"\1F383  "}
+.ws-digital.ws-hw .mcell{background:#fbf7ff}
+.ws-print .part{break-inside:avoid;page-break-inside:avoid}
+.ws-print .keypage{break-before:page;page-break-before:always;margin-top:0}
+.ws-print .dirbox{background:#fff;border:2px solid var(--or);border-left-width:6px}
+
+html,body{margin:0;background:#f2eff6}
+.page{max-width:980px;margin:0 auto;padding:18px 14px 60px}
+#root{background:#fff;border:2px solid #d8cfe5;border-radius:12px;padding:24px 26px}
+@media (max-width:620px){#root{padding:14px 10px}.page{padding:8px 6px 40px}}
+body.hw{background:#241638 radial-gradient(circle at 88% 6%, #fff6d8 0 34px, rgba(255,246,216,.18) 35px 60px, transparent 61px) no-repeat fixed}
+body.hw #root{border:4px solid #e8731c;box-shadow:0 10px 40px rgba(0,0,0,.35)}
+</style></head><body class="hw"><main class="page"><div id="root"></div></main><script>
+const CONFIG={"preset":"bags","title":"Making our trick-or-treat bags","directions":"Match each word to its meaning.","pairs":[{"w":"Design","d":"The picture and words that go on the bag.","pic":"🎨"},{"w":"Canva","d":"The computer program we use to make designs.","pic":"💻"},{"w":"Square","d":"A shape with four sides that are the same size. Our bag designs are this shape.","pic":"🟧"},{"w":"Blank bag","d":"A plain bag with nothing printed on it yet.","pic":"👜"},{"w":"Sublimation paper","d":"The special paper the design is printed on.","pic":"📄"},{"w":"Heat press","d":"The hot machine that presses the design onto the bag.","pic":"🔥"},{"w":"Mirror image","d":"A flipped picture, so the design looks right after it is pressed.","pic":"🪞"},{"w":"Heat gloves","d":"Gloves that keep your hands safe from hot things.","pic":"🧤"}],"perSet":8,"size":"l","rate":0.85,"theme":"halloween","showPics":true,"readAloud":true,"readOnTap":false,"showScore":true,"showMarks":true,"key":true,"blanks":false,"dateLine":true,"email":"","subject":"Worksheet results","seed":362326326};
+(function wsRuntime(){
+  'use strict';
+  const LETTERS = 'ABCDEFGH';
+  const SPEAKER = '<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M3.5 9.2h3.8L12 5.4v13.2l-4.7-3.8H3.5z" fill="currentColor"/><path d="M15.2 9a4.2 4.2 0 0 1 0 6M17.8 6.4a7.8 7.8 0 0 1 0 11.2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+
+  const PUMPKIN = '<svg viewBox="0 0 64 60" aria-hidden="true" focusable="false"><path d="M31 14c0-6 3-10 8-11" stroke="#3f6b2a" stroke-width="5" fill="none" stroke-linecap="round"/><ellipse cx="20" cy="37" rx="16" ry="20" fill="#d9661a"/><ellipse cx="44" cy="37" rx="16" ry="20" fill="#d9661a"/><ellipse cx="32" cy="37" rx="14" ry="21.5" fill="#f08a2e"/><path d="M20 29L27 38H13zM44 29L51 38H37z" fill="#2a1a3a"/><path d="M15 45q17 12 34 0l-4 1-3 4-4-4-4 5-4-5-4 4-3-4-4-1z" fill="#2a1a3a"/></svg>';
+  const BAT = '<svg viewBox="0 0 64 26" aria-hidden="true" focusable="false"><path d="M32 11L35 6L36 12C40 10 44 8 50 6C56 4 61 6 63 9C58 10 56 13 56 17C52 15 48 16 46 19C43 16 39 17 37 20C35 18 33 19 32 22C31 19 29 18 27 20C25 17 21 16 18 19C16 16 12 15 8 17C8 13 6 10 1 9C3 6 8 4 14 6C20 8 24 10 28 12L29 6Z" fill="currentColor"/></svg>';
+  function picEl(pic, cls){
+    if (!pic) return null;
+    if (/^data:image\//.test(pic)) return h('span', {class:'pic img ' + (cls || '')}, h('img', {src:pic, alt:''}));
+    return h('span', {class:'pic ' + (cls || ''), 'aria-hidden':'true'}, pic);
+  }
+
+  function h(tag, props, ...kids){
+    const el = document.createElement(tag);
+    if (props) Object.keys(props).forEach(k => {
+      const v = props[k];
+      if (v === null || v === undefined || v === false) return;
+      if (k === 'class') el.className = v;
+      else if (k === 'dataset') Object.assign(el.dataset, v);
+      else if (k === 'html') el.innerHTML = v;
+      else if (k.slice(0, 2) === 'on' && typeof v === 'function') el.addEventListener(k.slice(2), v);
+      else if (k === 'value') el.value = v;
+      else el.setAttribute(k, v === true ? '' : v);
+    });
+    (function add(list){ list.forEach(c => { if (c === null || c === undefined || c === false) return; if (Array.isArray(c)) add(c); else el.appendChild(typeof c === 'string' || typeof c === 'number' ? document.createTextNode(String(c)) : c); }); })(kids);
+    return el;
+  }
+
+  /* seeded mixing so print, digital and answer key always agree */
+  function rng(seed){ let a = seed >>> 0; return () => { a = (a + 0x6D2B79F5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
+  function derange(n, seed){
+    const id = [...Array(n).keys()];
+    if (n < 2) return id;
+    const r = rng(seed);
+    for (let tries = 0; tries < 80; tries++) {
+      const p = id.slice();
+      for (let i = n - 1; i > 0; i--) { const j = Math.floor(r() * (i + 1)); const t = p[i]; p[i] = p[j]; p[j] = t; }
+      if (p.every((v, i) => v !== i)) return p;
+    }
+    return id.map(i => (i + 1) % n);
+  }
+  function cleanPairs(cfg){ return (cfg.pairs || []).map(p => ({w:String(p.w || '').trim(), d:String(p.d || '').trim(), pic:String(p.pic || '').trim()})).filter(p => p.w && p.d); }
+  function makeSets(cfg){
+    const pairs = cleanPairs(cfg), n = pairs.length;
+    if (!n) return [];
+    const per = Math.max(3, Math.min(8, +cfg.perSet || 6));
+    const k = Math.ceil(n / per), base = Math.floor(n / k), extra = n % k;
+    const sets = []; let at = 0;
+    for (let s = 0; s < k; s++) {
+      const size = base + (s < extra ? 1 : 0);
+      const items = pairs.slice(at, at + size); at += size;
+      sets.push({items, perm:derange(items.length, (cfg.seed || 1) + s * 7919)});
+    }
+    return sets;
+  }
+
+  /* read aloud */
+  const canSpeak = () => !!(window.speechSynthesis && window.SpeechSynthesisUtterance);
+  function speak(text, cfg){
+    if (!canSpeak()) return;
+    try {
+      let t = String(text).replace(/\p{Extended_Pictographic}|\uFE0F|\u200D/gu, '').trim();
+      if (!t) return;
+      if (t === t.toUpperCase() && t.length > 1) t = t.toLowerCase(); /* so voices do not spell out capitals */
+      const u = new SpeechSynthesisUtterance(t);
+      u.rate = +((cfg && cfg.rate) || 0.85);
+      u.lang = document.documentElement.lang || 'en-US';
+      window.speechSynthesis.cancel(); window.speechSynthesis.speak(u);
+    } catch(e) {}
+  }
+  function sayBtn(text, cfg, label){
+    return h('button', {type:'button', class:'say', 'aria-label':'Read aloud: ' + (label || text), title:'Read aloud', html:SPEAKER,
+      onclick:e => { e.stopPropagation(); speak(text, cfg); },
+      onpointerdown:e => e.stopPropagation(),
+      onkeydown:e => e.stopPropagation()});
+  }
+
+  /* ---------- one matching part ---------- */
+  function buildSet(set, si, nSets, ctx, cfg, announce){
+    const items = set.items, perm = set.perm, n = items.length;
+    const digital = ctx.mode === 'digital';
+    const talk = digital && cfg.readAloud && canSpeak();
+    const grid = h('div', {class:'mgrid'});
+    const Lc = [], Rc = [], Ld = [], Rd = [], Lm = [];
+    for (let r = 0; r < n; r++) {
+      const p = items[r], q = items[perm[r]];
+      const ld = h('span', {class:'dot', 'aria-hidden':'true'}), rd = h('span', {class:'dot', 'aria-hidden':'true'});
+      const mk = h('span', {class:'mk', 'aria-hidden':'true'});
+      const lc = h('div', {class:'mcell left'},
+        !digital && cfg.blanks ? h('span', {class:'blank', 'aria-hidden':'true'}) : null,
+        h('span', {class:'num'}, (r + 1) + '.'),
+        cfg.showPics ? picEl(p.pic) : null,
+        h('span', {class:'wtxt'}, p.w),
+        talk ? sayBtn(p.w, cfg) : null, mk, ld);
+      const rc = h('div', {class:'mcell right'}, rd,
+        h('span', {class:'let'}, LETTERS[r] + '.'),
+        h('span', {class:'dtxt'}, q.d),
+        talk ? sayBtn(q.d, cfg, 'meaning ' + LETTERS[r]) : null);
+      grid.append(lc, h('div', {class:'mgap', 'aria-hidden':'true'}), rc);
+      Lc.push(lc); Rc.push(rc); Ld.push(ld); Rd.push(rd); Lm.push(mk);
+    }
+    if (!digital) return {el:grid};
+
+    /* ----- digital: tap-tap or drag between dots ----- */
+    const NS = 'http://www.w3.org/2000/svg';
+    const svg = document.createElementNS(NS, 'svg'); svg.setAttribute('class', 'mlines'); svg.setAttribute('aria-hidden', 'true');
+    grid.appendChild(svg);
+    let conns = {}, sel = null, marked = false, temp = null, suppressUntil = 0;
+    const cellText = (side, idx) => side === 'L' ? items[idx].w : items[perm[idx]].d;
+    const centre = d => { const r = d.getBoundingClientRect(), b = grid.getBoundingClientRect(); return [r.left + r.width / 2 - b.left, r.top + r.height / 2 - b.top]; };
+    const mkLine = (a, b, cls) => { const l = document.createElementNS(NS, 'line'); l.setAttribute('x1', a[0]); l.setAttribute('y1', a[1]); l.setAttribute('x2', b[0]); l.setAttribute('y2', b[1]); l.setAttribute('class', cls); svg.appendChild(l); return l; };
+    const isRight = l => perm[conns[l]] === +l;
+    function redraw(){
+      svg.querySelectorAll('line:not(.tmp)').forEach(x => x.remove());
+      Object.keys(conns).forEach(l => mkLine(centre(Ld[l]), centre(Rd[conns[l]]), 'ln' + (marked ? (isRight(l) ? ' ok' : ' no') : '')));
+    }
+    function paint(){
+      const linkedR = {}; Object.keys(conns).forEach(l => { linkedR[conns[l]] = true; });
+      Lc.forEach((c, i) => {
+        c.classList.toggle('linked', conns[i] !== undefined);
+        c.classList.toggle('sel', !!sel && sel.side === 'L' && sel.idx === i);
+        c.setAttribute('aria-pressed', sel && sel.side === 'L' && sel.idx === i ? 'true' : 'false');
+        const st = !marked ? '' : conns[i] === undefined ? 'none' : isRight(i) ? 'ok' : 'no';
+        c.classList.toggle('ok', st === 'ok'); c.classList.toggle('no', st === 'no' || st === 'none');
+        Lm[i].textContent = st === 'ok' ? '\u2713' : st ? '\u2717' : '';
+        const matched = conns[i] !== undefined ? ', matched to meaning ' + LETTERS[conns[i]] : '';
+        c.setAttribute('aria-label', 'Word ' + (i + 1) + ': ' + items[i].w + matched + (st === 'ok' ? ', correct' : st ? ', not correct yet' : ''));
+      });
+      Rc.forEach((c, j) => {
+        c.classList.toggle('linked', !!linkedR[j]);
+        c.classList.toggle('sel', !!sel && sel.side === 'R' && sel.idx === j);
+        c.setAttribute('aria-pressed', sel && sel.side === 'R' && sel.idx === j ? 'true' : 'false');
+        c.setAttribute('aria-label', 'Meaning ' + LETTERS[j] + ': ' + items[perm[j]].d + (linkedR[j] ? ', matched' : ''));
+      });
+    }
+    function connect(a, b){
+      const l = a.side === 'L' ? a.idx : b.idx, r = a.side === 'L' ? b.idx : a.idx;
+      Object.keys(conns).forEach(k => { if (conns[k] === r) delete conns[k]; });
+      conns[l] = r;
+      if (marked) { marked = false; }
+      announce(items[l].w + ' is matched to meaning ' + LETTERS[r] + '.');
+    }
+    function tap(side, idx){
+      if (cfg.readOnTap) speak(cellText(side, idx), cfg);
+      if (sel && sel.side === side && sel.idx === idx) sel = null;
+      else if (sel && sel.side !== side) { connect(sel, {side, idx}); sel = null; }
+      else sel = {side, idx};
+      paint(); redraw();
+    }
+    function hookCell(cell, dot, side, idx){
+      cell.tabIndex = 0; cell.setAttribute('role', 'button');
+      cell.addEventListener('click', () => { if (Date.now() < suppressUntil) return; tap(side, idx); });
+      cell.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); tap(side, idx); } });
+      let start = null;
+      dot.addEventListener('pointerdown', e => {
+        if (e.button !== undefined && e.button > 0) return;
+        e.preventDefault();
+        start = {x:e.clientX, y:e.clientY, moved:false};
+        try { dot.setPointerCapture(e.pointerId); } catch(err) {}
+      });
+      dot.addEventListener('pointermove', e => {
+        if (!start) return;
+        if (!start.moved && Math.hypot(e.clientX - start.x, e.clientY - start.y) < 8) return;
+        start.moved = true;
+        const b = grid.getBoundingClientRect(), a = centre(dot), p = [e.clientX - b.left, e.clientY - b.top];
+        if (!temp) { temp = mkLine(a, p, 'ln tmp'); cell.classList.add('sel'); }
+        temp.setAttribute('x2', p[0]); temp.setAttribute('y2', p[1]);
+      });
+      const end = e => {
+        if (!start) return;
+        const moved = start.moved; start = null;
+        if (temp) { temp.remove(); temp = null; }
+        suppressUntil = Date.now() + 400;
+        if (!moved) { tap(side, idx); return; }
+        const hit = document.elementFromPoint(e.clientX, e.clientY);
+        const tgt = hit && hit.closest ? hit.closest('.mcell') : null;
+        if (tgt && grid.contains(tgt)) {
+          const tSide = tgt.classList.contains('left') ? 'L' : 'R';
+          const tIdx = (tSide === 'L' ? Lc : Rc).indexOf(tgt);
+          if (tSide !== side && tIdx > -1) { if (cfg.readOnTap) speak(cellText(tSide, tIdx), cfg); connect({side, idx}, {side:tSide, idx:tIdx}); sel = null; }
+        }
+        paint(); redraw();
+      };
+      dot.addEventListener('pointerup', end);
+      dot.addEventListener('pointercancel', () => { start = null; if (temp) { temp.remove(); temp = null; } paint(); });
+    }
+    Lc.forEach((c, i) => hookCell(c, Ld[i], 'L', i));
+    Rc.forEach((c, j) => hookCell(c, Rd[j], 'R', j));
+    paint();
+    if (window.ResizeObserver) new ResizeObserver(redraw).observe(grid);
+    window.addEventListener('resize', redraw);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(redraw);
+
+    const clearBtn = h('button', {type:'button', class:'tbtn small', onclick:() => { conns = {}; sel = null; marked = false; paint(); redraw(); announce('Lines cleared.'); }}, 'Clear lines');
+    return {
+      el:grid, tools:clearBtn,
+      check(){
+        let got = 0; const lines = [];
+        items.forEach((p, i) => {
+          if (conns[i] === undefined) lines.push({w:p.w, st:'none'});
+          else if (isRight(i)) { got++; lines.push({w:p.w, st:'ok'}); }
+          else lines.push({w:p.w, st:'no', chose:items[perm[conns[i]]].d});
+        });
+        return {got, total:n, lines, open:n - Object.keys(conns).length};
+      },
+      mark(){ marked = true; sel = null; paint(); redraw(); },
+      unmarkWrong(){ Object.keys(conns).forEach(l => { if (!isRight(l)) delete conns[l]; }); marked = false; paint(); redraw(); },
+      reset(){ conns = {}; sel = null; marked = false; paint(); redraw(); }
+    };
+  }
+
+  /* ---------- staff answer key ---------- */
+  function buildKey(cfg, sets){
+    const box = h('section', {class:'keypage'}, h('h1', null, 'Answer key (staff)'), h('p', {class:'keysub'}, cfg.title || 'Matching worksheet'));
+    sets.forEach((s, si) => {
+      if (sets.length > 1) box.appendChild(h('h2', null, 'Part ' + (si + 1)));
+      const ol = h('ol', {class:'keylist'});
+      s.items.forEach((p, i) => { const j = s.perm.indexOf(i); ol.appendChild(h('li', null, cfg.showPics ? picEl(p.pic, 'small') : null, h('b', null, p.w), ' = ', h('b', {class:'keylet'}, LETTERS[j]), '  ', h('span', {class:'keydef'}, p.d))); });
+      box.appendChild(ol);
+    });
+    box.appendChild(h('p', {class:'keynote'}, 'Reading aloud on paper: read the word and its number, then read each meaning with its letter. Learners can point to or say the letter if writing or drawing is hard.'));
+    return box;
+  }
+
+  function dl(name, blob){
+    const a = h('a', {href:URL.createObjectURL(blob), download:name}); document.body.appendChild(a); a.click();
+    setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 800);
+  }
+
+  function mount(root, cfg, mode){
+    root.textContent = '';
+    const spooky = cfg.theme !== 'plain';
+    root.className = 'ws ws-' + mode + ' sz-' + (cfg.size || 'l') + (spooky ? ' ws-hw' : '');
+    const ctx = {mode};
+    const digital = mode === 'digital';
+    const live = h('div', {class:'sr', 'aria-live':'polite'});
+    const announce = t => { live.textContent = ''; setTimeout(() => { live.textContent = t; }, 30); };
+    const nameEl = digital ? h('input', {type:'text', placeholder:'Type your name', 'aria-label':'Your name', autocomplete:'off'}) : null;
+
+    if (spooky) root.appendChild(h('div', {class:'hwbats', 'aria-hidden':'true', html:BAT + BAT + BAT}));
+    root.appendChild(h('header', {class:'top'},
+      spooky ? h('span', {class:'hwpump', 'aria-hidden':'true', html:PUMPKIN}) : null,
+      h('h1', null, cfg.title || 'Matching worksheet'),
+      h('div', {class:'idlines'},
+        h('div', {class:'idline'}, h('span', {class:'idlbl'}, 'Name'), digital ? nameEl : h('span', {class:'rule'})),
+        !digital && cfg.dateLine ? h('div', {class:'idline'}, h('span', {class:'idlbl'}, 'Date'), h('span', {class:'rule short'})) : null)));
+
+    const dirText = cfg.directions || 'Match each word to its meaning.';
+    const how = digital ? 'Tap a word, then tap its meaning. You can also drag from one dot to the other. To change a match, tap the word again and pick a new meaning.'
+                        : cfg.blanks ? 'Draw a line from each word to its meaning, or write the letter of the meaning on the blank.' : 'Draw a line from each word to its meaning.';
+    root.appendChild(h('div', {class:'dirbox'},
+      h('div', {class:'dirtext'}, h('p', {class:'dir'}, dirText), h('p', {class:'how'}, how)),
+      digital && cfg.readAloud && canSpeak() ? h('button', {type:'button', class:'tbtn readdir', onclick:() => speak(dirText + ' ' + how, cfg), html:SPEAKER + '<span>Read the directions</span>'}) : null));
+    root.appendChild(live);
+
+    const sets = makeSets(cfg);
+    if (!sets.length) { root.appendChild(h('p', {class:'empty'}, 'Add at least two words with meanings to see the worksheet.')); return; }
+    const parts = [];
+    sets.forEach((s, si) => {
+      const b = buildSet(s, si, sets.length, ctx, cfg, announce);
+      parts.push(b);
+      root.appendChild(h('section', {class:'part'},
+        sets.length > 1 || b.tools ? h('div', {class:'parthead' + (sets.length > 1 ? '' : ' solo')}, sets.length > 1 ? h('h2', null, 'Part ' + (si + 1) + ' of ' + sets.length) : h('span'), b.tools || null) : null,
+        b.el));
+    });
+    if (!digital) { if (cfg.key) root.appendChild(buildKey(cfg, sets)); return; }
+
+    const done = h('button', {type:'button', class:'bigbtn'}, "I'm finished");
+    const out = h('div', {class:'resultwrap'});
+    root.appendChild(h('div', {class:'donebar'}, done)); root.appendChild(out);
+
+    done.addEventListener('click', () => {
+      window.speechSynthesis && window.speechSynthesis.cancel();
+      const res = parts.map(p => p.check());
+      const got = res.reduce((a, r) => a + r.got, 0), total = res.reduce((a, r) => a + r.total, 0), open = res.reduce((a, r) => a + r.open, 0);
+      if (cfg.showMarks) parts.forEach(p => p.mark());
+      const name = (nameEl.value || '').trim();
+      const text = () => {
+        const L = [(cfg.title || 'Matching worksheet') + ' - results', 'Learner: ' + (name || '(no name entered)'), 'Date: ' + new Date().toLocaleString(), 'Score: ' + got + ' of ' + total + ' matched correctly', ''];
+        res.forEach((r, i) => {
+          if (res.length > 1) L.push('Part ' + (i + 1) + ': ' + r.got + ' of ' + r.total);
+          r.lines.forEach(x => L.push((x.st === 'ok' ? '  [right] ' : x.st === 'no' ? '  [wrong] ' : '  [no line] ') + x.w + (x.st === 'no' ? '  (chose: ' + x.chose + ')' : '')));
+        });
+        return L.join('\n');
+      };
+      const subj = (cfg.subject || 'Worksheet results') + (name ? ' - ' + name : '');
+      const missed = got < total;
+      out.textContent = '';
+      const em = h('input', {type:'email', class:'emailin', placeholder:'name@example.com', value:cfg.email || '', 'aria-label':'Email address for results'});
+      const copyBtn = h('button', {type:'button', class:'tbtn big', onclick:() => {
+        const t = text(), ok = () => { copyBtn.textContent = 'Copied'; setTimeout(() => { copyBtn.textContent = 'Copy results'; }, 2000); };
+        const fallback = () => { const ta = h('textarea', {style:'position:fixed;left:-999px'}); ta.value = t; document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); ok(); } catch(e) {} ta.remove(); };
+        if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(t).then(ok, fallback); else fallback();
+      }}, 'Copy results');
+      const heading = cfg.showScore ? 'You matched ' + got + ' of ' + total + ' correctly.' : 'Nice work. Your answers are ready to send.';
+      const sub = [];
+      if (open) sub.push(open === 1 ? '1 word does not have a line yet.' : open + ' words do not have a line yet.');
+      if (cfg.showMarks && missed) sub.push('Lines marked with an X need another look.');
+      out.appendChild(h('div', {class:'result'},
+        h('h2', null, heading),
+        sub.length ? h('p', {class:'resnote'}, sub.join(' ')) : null,
+        cfg.showMarks && missed ? h('div', {class:'rbtns'}, h('button', {type:'button', class:'bigbtn', onclick:() => { parts.forEach(p => p.unmarkWrong()); out.textContent = ''; root.querySelector('.part').scrollIntoView({behavior:'smooth', block:'start'}); announce('Wrong lines removed. Try those words again.'); }}, 'Fix the ones I missed')) : null,
+        h('div', {class:'emailrow'}, h('label', null, 'Send results to'), em),
+        h('div', {class:'rbtns'},
+          h('button', {type:'button', class:cfg.showMarks && missed ? 'tbtn big' : 'bigbtn', onclick:() => {
+            const q = 'to=' + encodeURIComponent(em.value.trim()) + '&su=' + encodeURIComponent(subj) + '&body=' + encodeURIComponent(text());
+            const w = window.open('https://mail.google.com/mail/?view=cm&fs=1&' + q, '_blank');
+            if (!w) window.location.href = 'https://mail.google.com/mail/?view=cm&fs=1&' + q;
+          }}, 'Open in Gmail'),
+          h('button', {type:'button', class:'tbtn big', onclick:() => { const a = h('a', {href:'mailto:' + em.value.trim() + '?subject=' + encodeURIComponent(subj) + '&body=' + encodeURIComponent(text())}); document.body.appendChild(a); a.click(); a.remove(); }}, 'Email app'),
+          copyBtn,
+          h('button', {type:'button', class:'tbtn big', onclick:() => dl('results' + (name ? '-' + name.replace(/[^\w-]+/g, '_') : '') + '.txt', new Blob([text()], {type:'text/plain'}))}, 'Save results file'),
+          h('button', {type:'button', class:'tbtn big', onclick:() => { mount(root, cfg, mode); window.scrollTo(0, 0); }}, 'Start over')),
+        h('p', {class:'note'}, 'Open in Gmail needs internet and a Gmail sign-in. No internet? Use Copy results or Save results file.')));
+      announce(heading);
+      out.scrollIntoView({behavior:'smooth', block:'start'});
+    });
+  }
+
+  window.WS = {mount, makeSets, cleanPairs, speak, canSpeak, h, PUMPKIN, BAT};
+})();
+WS.mount(document.getElementById("root"),CONFIG,"digital");
+</script></body></html>
